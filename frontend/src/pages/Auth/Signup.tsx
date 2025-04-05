@@ -1,73 +1,72 @@
-import React, { useState } from 'react'
-import { Input } from "@/components/ui/input"
-import { Button } from '@/components/ui/button'
+import React, { useState } from 'react';
+import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserFailure, fetchUserStart, fetchUserSuccess } from '@/Redux/userSlice';
+import { useDispatch } from 'react-redux';
+import { fetchUserFailure } from '@/Redux/userSlice';
+import alertcomp from '@/lib/alertcomp';
 
 const SignUp = () => {
-    const [error, setError] = useState<String | null>(null);
-    const [success, setSuccess] = useState<String | null>(null);
-    const [loading, setLoading] = useState<Boolean>(false);
-    const navigate = useNavigate()
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const {currentUser} = useSelector((state : any) => state.user);
-    const dispatch = useDispatch()
+  const register = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
 
-    const register = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      const formData = new FormData(e.currentTarget);
+      const username = formData.get('username');
+      const email = formData.get('email');
+      const password = formData.get('password');
 
-        try {
-            
-            setLoading(true);
-            e.preventDefault();
+      const res = await axios.post('/auth/signup', { username, email, password });
+        console.log(res);
+      setSuccess("User created successfully! Redirecting to login...");
+      setError(null);
 
-            const formData = new FormData(e.currentTarget);
-            const username = formData.get('username');
-            const email = formData.get('email')
-            const password = formData.get('password');
+      // Redirect to login after delay
+      setTimeout(() => {
+        navigate('/signin');
+      }, 2000);
 
-            // if (username?.toString.length == 0 ||
-            //     password?.toString.length == 0 ||
-            //     email?.toString.length == 0) {
-            //     return setError("Values must not be empty")
-            // }
-
-            const res = await axios.post('/auth/signup', { username, email, password });
-            // console.log(res.data);
-            setSuccess("User created Successfully ! Login to continue")
-            setError(null)
-
-        } catch (error: any) {
-            console.log(error);
-            setSuccess(null)
-            setError(error.response.data.message)
-            dispatch(fetchUserFailure())
-        } finally {
-            setLoading(false)
-        }
+    } catch (error: any) {
+      console.error(error);
+      setSuccess(null);
+      setError(error?.response?.data?.message || "Something went wrong.");
+      dispatch(fetchUserFailure());
+    } finally {
+      setLoading(false);
     }
-    return (
-        <div>
+  };
 
-            {/* SIGN IN FORM */}
-            <form onSubmit={register}>
-                <Input type='text' name='username' placeholder='Username' />
-                <Input type='email' name='email' placeholder='Email' />
-                <Input type='password' name='password' placeholder='Password' />
+  return (
+    <div className="max-w-md mx-auto mt-20 p-6 border border-gray-200 rounded-2xl shadow-md space-y-6">
+      <h2 className="text-2xl font-semibold text-center">Create Account</h2>
 
-                {error && <p className="text-red-500">{error}</p>}
-                {success && <p className="text-green-600">{success}</p>}
+      <form onSubmit={register} className="space-y-4">
+        <Input type="text" name="username" placeholder="Username" required />
+        <Input type="email" name="email" placeholder="Email" required />
+        <Input type="password" name="password" placeholder="Password" required />
 
-                <Button type='submit' >
-                    {
-                        loading ? "Loading..." : "Sign Up"
-                    }
-                </Button>
-            </form>
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? "Creating Account..." : "Sign Up"}
+        </Button>
+      </form>
 
-        </div>
-    )
-}
+      {error && (
+        alertcomp("Error", error, "destructive")
+      )}
 
-export default SignUp
+      {success && (
+        alertcomp("Success", success, "default")
+      )}
+    </div>
+  );
+};
+
+export default SignUp;

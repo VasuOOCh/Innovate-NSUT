@@ -8,6 +8,7 @@ import {connectDB} from "./lib/connectDb.js";
 
 // Import the routers :
 import authRouter from "./routers/authRoute.js"
+import messageRouter from "./routers/messageRoute.js"
 
 
 import { app, server } from "./lib/socket.js";
@@ -27,9 +28,6 @@ app.use(
   })
 );
 
-// app.use("/api/auth", authRoutes);
-// app.use("/api/message", messageRoutes);
-
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
@@ -39,6 +37,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use('/api/auth', authRouter);
+app.use('/api/message', messageRouter);
 
 app.use((err,req,res,next) => {
   console.log( "Error is : ", err);

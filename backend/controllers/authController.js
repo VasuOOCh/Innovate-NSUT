@@ -29,7 +29,7 @@ export const signin = async (req,res,next) => {
     try {
  
      const existingUser = await User.findOne({
-         username : req.body.username,
+        $or : [{username : req.body.username}, {email : req.body.email}]
      })
     if(!existingUser) return next(createError(400, "Invalid credentials"))
         // console.log(existingUser);

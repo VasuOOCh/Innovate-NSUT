@@ -18,7 +18,7 @@ const SignUp = () => {
     const register = async (e: React.FormEvent<HTMLFormElement>) => {
 
         try {
-            dispatch(fetchUserStart())
+            
             setLoading(true);
             e.preventDefault();
 
@@ -34,12 +34,10 @@ const SignUp = () => {
             // }
 
             const res = await axios.post('/auth/signup', { username, email, password });
-            console.log(res.data);
+            // console.log(res.data);
             setSuccess("User created Successfully ! Login to continue")
             setError(null)
-            dispatch(fetchUserSuccess(res.data))
 
-            // navigate('/');
         } catch (error: any) {
             console.log(error);
             setSuccess(null)

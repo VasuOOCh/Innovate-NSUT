@@ -1,24 +1,21 @@
+// src/lib/AlertComp.tsx
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
 
-const alertcomp = (title:string,desc:string,variant:string) => {
+type Props = {
+  title: string;
+  desc: string;
+  variant: "default" | "destructive";
+};
+
+const AlertComp = ({ title, desc, variant }: Props) => {
   return (
-    variant === "destructive" ? (<Alert variant="destructive">
+    <Alert variant={variant}>
       <Terminal className="h-4 w-4" />
       <AlertTitle>{title}</AlertTitle>
-      <AlertDescription>
-        {desc}
-      </AlertDescription>
-    </Alert>) : (
-      <Alert variant="default">
-        <Terminal className="h-4 w-4" />
-        <AlertTitle>{title}</AlertTitle>
-        <AlertDescription>
-          {desc}
-        </AlertDescription>
-      </Alert>
-    )
+      <AlertDescription>{desc}</AlertDescription>
+    </Alert>
   );
 };
 
-export default alertcomp;
+export default AlertComp;

@@ -5,7 +5,7 @@ import LAFHome from './LostAndFound/LAFHome'
 const Home = () => {
   return (
     <div>
-      <LAFHome />
+      Home here
     </div>
   )
 }

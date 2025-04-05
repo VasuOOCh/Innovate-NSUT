@@ -1,74 +1,160 @@
-import { Input } from '@/components/ui/input'
-import React, { useState } from 'react'
-import { Cloudinary } from '@cloudinary/url-gen';
-import CloudinaryUploadWidget from '@/lib/UploadWidget';
-import { Button } from '@/components/ui/button';
-import axios from 'axios';
+"use client";
+
+import { useState } from "react";
+import { Cloudinary } from "@cloudinary/url-gen";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2 } from "lucide-react";
+import CloudinaryUploadWidget from "@/lib/UploadWidget";
+import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Query = () => {
-    const [error, setError] = useState<String | null>(null);
-    const [success, setSuccess] = useState<String | null>(null);
-    const [loading, setLoading] = useState<Boolean | null>(null);
-    const [images, setImages] = useState([]);
+    const {currentUser} = useSelector((self : any) => self.user)
 
-    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setLoading(true);
-        try {
-            const formData = new FormData(e.currentTarget);
-            const name = formData.get('name');
-            const desc = formData.get('desc')
-            const location = formData.get('location')
-            
-            const res = await axios.post('/laf/upload', {name,desc,location,images })
-        } catch (error) {
-            console.log(error);
-            
-        }
+    if(!currentUser) {
+        return <Navigate to="/signin" replace />;
     }
+  const [images, setImages] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    desc: "",
+    location: ""
+  });
 
-    const cloudName = 'dzgqb4bb6';
-    const uploadPreset = 'ctrlwin';
+  const cloudName = "dzgqb4bb6";
+  const uploadPreset = "ctrlwin";
 
-    // Cloudinary configuration
-    const cld = new Cloudinary({
-        cloud: {
-            cloudName,
-        },
-    });
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName,
+    },
+  });
 
-    // Upload Widget Configuration
-    const uwConfig = {
-        cloudName,
-        uploadPreset,
-        // Uncomment and modify as needed:
-        // cropping: true,
-        // showAdvancedOptions: true,
-        // sources: ['local', 'url'],
-        multiple: true,
-        // folder: 'user_images',
-        // tags: ['users', 'profile'],
-        // context: { alt: 'user_uploaded' },
-        // clientAllowedFormats: ['images'],
-        // maxImageFileSize: 2000000,
-        // maxImageWidth: 2000,
-        theme: 'purple',
-    };
-    return (
-        <div>
-            <h1>Upload yuor Query</h1>
-            <form onSubmit={submitForm}>
-                <Input placeholder='Name' name='name' />
-                <Input placeholder='Description' name='desc' />
-                <Input placeholder='Location' name='location' />
-                <CloudinaryUploadWidget uwConfig={uwConfig} setPublicId={setImages} />
-                <Button type='submit'>Submit</Button>
+  const uwConfig = {
+    cloudName,
+    uploadPreset,
+    multiple: true,
+    theme: "purple",
+  };
 
-                {error && <p className="text-red-500">{error}</p>}
-                {success && <p className="text-green-600">{success}</p>}
-            </form>
-        </div>
-    )
-}
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
-export default Query
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setIsSubmitting(true);
+      setError(null);
+      
+      const res = await axios.post("/laf/upload", {
+        ...formData,
+        images,
+      });
+
+      setSuccess("Query submitted successfully!");
+      setFormData({ name: "", desc: "", location: "" });
+      setImages([]);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to submit query. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="container mx-auto py-8">
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-center">
+            Upload Your Query
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={onSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">Name</label>
+                <Input 
+                  placeholder="Your name" 
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">Description</label>
+                <Textarea
+                  placeholder="Detailed description of your query"
+                  className="min-h-[120px]"
+                  name="desc"
+                  value={formData.desc}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">Location</label>
+                <Input 
+                  placeholder="Where is this located?" 
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">Images</label>
+                <CloudinaryUploadWidget
+                  uwConfig={uwConfig}
+                  setPublicId={setImages}
+                />
+                {images.length > 0 && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {images.length} image(s) selected
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            {success && (
+              <Alert variant="success">
+                <AlertDescription>{success}</AlertDescription>
+              </Alert>
+            )}
+
+            <Button type="submit" disabled={isSubmitting} className="w-full">
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Submit Query"
+              )}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default Query;

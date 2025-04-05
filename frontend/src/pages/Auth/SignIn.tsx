@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserFailure, fetchUserStart, fetchUserSuccess } from '@/Redux/userSlice';
 import axios from 'axios';
-import alertcomp from '@/lib/alertcomp';
+import { Navigate } from 'react-router-dom';
 
 const SignIn = () => {
-  const navigate = useNavigate();
+  const { currentUser } = useSelector((state: any) => state.user);
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  
+  if(currentUser) {
+    return <Navigate to="/laf" replace />;
+  }
 
   const login = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,7 +36,7 @@ const SignIn = () => {
 
       // Redirect after a delay
       setTimeout(() => {
-        navigate('/');
+        <Navigate to="/laf" replace />;
       }, 2000);
 
     } catch (error: any) {
@@ -57,14 +61,6 @@ const SignIn = () => {
           {loading ? "Signing In..." : "Sign In"}
         </Button>
       </form>
-
-      {error && (
-        alertcomp("Error", error, "destructive") 
-      )}
-
-      {success && (
-        alertcomp("Success", success, "default")
-      )}
     </div>
   );
 };

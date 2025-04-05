@@ -1,3 +1,4 @@
+import { log } from "console";
 import Item from "../models/Item.js"
 
 export const uploadQuery = async (req,res,next) => {
@@ -21,10 +22,52 @@ export const uploadQuery = async (req,res,next) => {
     }
 }
 
-export const getItems = async (req,res,next) => {
+export const markAsFound = async (req,res,next) => {
+    // apply the auth here
     try {
-        const items = await Item.find().populate('owner', 'username email avatar');
-        res.status(200).json(items)
+        const {itemId, founderId} = req.body;
+        console.log(itemId, founderId);
+        
+
+        await Item.findByIdAndUpdate(itemId, {
+            finder : founderId
+        })
+
+        res.status(200).json("Maked it as found")
+        
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const deleteItem = async (req,res, next) => {
+    // apply auth here
+    try {
+        await Item.findByIdAndDelete(req.body.id);
+        res.status(200).json("Item deleted successfully");
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getItems = async (req, res, next) => {
+  try {
+    const items = await Item.find()
+      .populate("owner", "username email avatar")
+      
+    res.status(200).json(items);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserItems = async (req,res,next) => {
+    try {
+        const items = await Item.find({
+            owner : req.user.userId
+        }).populate('owner', 'username email avatar').populate("finder", "username email avatar"); 
+        // This will only populate if finder is not null;
+        res.status(200).json(items);
     } catch (error) {
         next(error)
     }

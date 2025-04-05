@@ -10,6 +10,7 @@ import {connectDB} from "./lib/connectDb.js";
 import authRouter from "./routers/authRoute.js"
 import messageRouter from "./routers/messageRoute.js"
 import lafRouter from "./routers/lafRouter.js"
+import userRoute from "./routers/userRoute.js"
 
 import { app, server } from "./lib/socket.js";
 
@@ -39,6 +40,7 @@ if (process.env.NODE_ENV === "production") {
 app.use('/api/auth', authRouter);
 app.use('/api/laf', lafRouter)
 app.use('/api/message', messageRouter);
+app.use('/api/users', userRoute)
 
 app.use((err,req,res,next) => {
   console.log( "Error is : ", err);

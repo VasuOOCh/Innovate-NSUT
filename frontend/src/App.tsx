@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SignUp from "./pages/Auth/Signup";
 import LAFHome from "./pages/LostAndFound/LAFHome";
 import Query from "./pages/LostAndFound/Query";
+import Profile from "./pages/Auth/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
         path : '/laf/query',
         element : <Query />
       },
+      {
+        path : '/profile',
+        element : <Profile />
+      }
       
     ]
   },

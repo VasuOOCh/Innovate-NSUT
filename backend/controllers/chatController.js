@@ -31,33 +31,31 @@ export const getChat = async (req, res) => {
 
 export const addChat = async (req, res, next) => {
     try {
-        const user = await User.findById(req.user.userId)
-
-        const followingList = user.following;
-        const followersList = user.followers;
-        // console.log(followingList,followersList);
-
-        followingList.forEach((list1) => {
-            followingList.forEach((list2) => {
-                if(list1 == list2) {
-                    const newChat = new Chat({
-                        users : [req.user.userId,list2]
-                    })
-                    newChat.save()
-                    .then(() => {
-                        
-                    })
-                }
-            })
-        })
-    
-        res.status(200).json("Operation succesfull")
-
-
+      const user1 = req.user.userId;
+      const user2 = req.body.userId;
+  
+      // Check if a chat already exists between the two users (order doesn't matter)
+      const existingChat = await Chat.findOne({
+        users: { $all: [user1, user2], $size: 2 },
+      });
+  
+      if (existingChat) {
+        return res.status(200).json("Chat already exists");
+      }
+  
+      // If no chat exists, create a new one
+      const newChat = new Chat({
+        users: [user1, user2],
+      });
+  
+      await newChat.save();
+  
+      res.status(200).json("Chat created successfully");
     } catch (error) {
-        next(error)
+      next(error);
     }
-}
+  };
+  
 
 // export const addChat = async (req, res) => {
 //     try {

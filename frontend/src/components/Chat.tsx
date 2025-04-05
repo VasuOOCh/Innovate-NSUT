@@ -135,7 +135,15 @@ function Chat({
           {myChatPeople.map((people) => (
             <div
               key={people._id}
-              onClick={() => setSelectedUser(people)}
+              onClick={async () => {
+                // console.log(people);
+                
+                await axios.post('/chats/add', {
+                  userId : people._id
+                })
+                setSelectedUser(people);
+
+              }}
               className="flex items-center gap-5 bg-white rounded-xl p-2 text-gray-700 cursor-pointer hover:bg-gray-100"
             >
               <img

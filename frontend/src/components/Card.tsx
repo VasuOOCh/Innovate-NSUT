@@ -15,10 +15,16 @@ type ItemType = {
   desc: string;
 };
 
-const Card = ({ item }: { item: ItemType }) => {
+const Card = ({
+  item,
+  onChatWithOwner
+}: {
+  item: ItemType;
+  onChatWithOwner?: () => void;
+}) => {
   return (
-    <PopItem item={item} trigger={
-      <ShadCard className="bg-background cursor-pointer shadow-lg hover:shadow-xl transition duration-300 rounded-2xl max-w-sm w-full">
+    <PopItem item={item} onChatWithOwner={onChatWithOwner} trigger={
+      <ShadCard className="bg-background cursor-pointer shadow-lg hover:shadow-xl transition duration-300 rounded-2xl max-w-xs w-full">
         <CardContent className="p-4 flex flex-col gap-4">
           {/* Owner Info */}
           <div className="flex items-center gap-4">

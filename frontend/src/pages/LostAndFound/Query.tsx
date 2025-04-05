@@ -10,14 +10,17 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 import CloudinaryUploadWidget from "@/lib/UploadWidget";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Query = () => {
     const {currentUser} = useSelector((self : any) => self.user)
 
-    if(!currentUser) {
-        return <Navigate to="/signin" replace />;
+    const navigate = useNavigate()
+    if (!currentUser) {
+        console.log("here");
+        
+        return navigate('/signin');
     }
   const [images, setImages] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);

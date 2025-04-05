@@ -1,4 +1,3 @@
-// components/MarkAsFoundPopup.tsx
 import React, { useEffect, useState } from "react";
 import {
   Dialog,
@@ -13,41 +12,46 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 
-
 interface MarkAsFoundPopupProps {
   onSelect: (userId: string) => void;
   trigger: React.ReactNode;
 }
 
 const MarkAsFoundPopup: React.FC<MarkAsFoundPopupProps> = ({ onSelect, trigger }) => {
+  const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-        const fetchUsers = async () => {
-            const res = await axios.get('/users/all');
-            // console.log(res.data);
-            setUsers(res.data)
-        }
-
-        fetchUsers()
-
-        setLoading(false)
-    } catch (error) {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("/users/all");
+        setUsers(res.data);
+      } catch (error) {
         console.log(error);
-        
-    }
-  }, [])
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (open) fetchUsers();
+  }, [open]);
 
   const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleConfirm = () => {
+    if (selectedUser) {
+      onSelect(selectedUser);
+      setOpen(false); // ✅ close dialog on confirm
+    }
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -82,7 +86,7 @@ const MarkAsFoundPopup: React.FC<MarkAsFoundPopupProps> = ({ onSelect, trigger }
         </ScrollArea>
 
         <div className="flex justify-end pt-4">
-          <Button onClick={() => selectedUser && onSelect(selectedUser)} disabled={!selectedUser}>
+          <Button onClick={handleConfirm} disabled={!selectedUser}>
             Confirm
           </Button>
         </div>

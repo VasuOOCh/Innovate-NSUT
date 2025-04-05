@@ -1,8 +1,9 @@
 import Card from '@/components/Card';
+import Chat from '@/components/Chat';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 type Item = {
     name: string,
     desc: string,
@@ -14,12 +15,17 @@ type Item = {
 const LAFHome = () => {
     const [loading, setLoading] = useState(true);
     const [items, setItems] = useState([]);
-    console.log(items);
+    // console.log(items);
     const { currentUser } = useSelector((self: any) => self.user)
-
+    const navigate = useNavigate()
     if (!currentUser) {
-        return <Navigate to="/signin" replace />;
+        console.log("here");
+
+        return navigate('/signin');
     }
+    // Inside LAFHome.tsx
+    const [selectedUser, setSelectedUser] = useState<any>(null);
+
 
     useEffect(() => {
         try {
@@ -37,24 +43,30 @@ const LAFHome = () => {
     }, [])
     return (
         <div>
-            <div className='flex flex-row my-8 mx-4'>
-                {/* Items dashboad */}
-                {
-                    loading ? "Loading..." : (
-                        <div className='w-[70%]'>
-                            {
-                                items.map((item: Item, key) => (
-                                    item.finder == null ? <Card key={key} item={item} /> : null
-                                ))
-                            }
-                        </div>
-                    )
-                }
+
+            <h1 className='text-3xl text-center my-4 font-bold'>Lost and Found</h1>
+            <div className='flex flex-row my-8 mx-4 gap-2 relative'>
+                <div className='w-[70%] flex justify-around gap-10 flex-wrap'>
+                    {
+                        items.map((item: Item, key) => (
+                            item.finder == null ? (
+                                <Card
+                                    key={key}
+                                    item={item}
+                                    onChatWithOwner={() => setSelectedUser(item.owner)}
+                                />
+
+                            ) : null
+                        ))
+                    }
+                </div>
 
                 {/* Chat Mode */}
-                <div>
-
+                <div className='w-[30%] sticky top-0'>
+                    <h1 className='text-3xl font-bold'> Chats</h1>
+                    <Chat selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
                 </div>
+
             </div>
         </div>
     )

@@ -25,10 +25,12 @@ type PopItemProps = {
     desc: string;
   };
   trigger: React.ReactNode;
+  onChatWithOwner: () => void;
 };
 
-const PopItem: React.FC<PopItemProps> = ({ item, trigger }) => {
+const PopItem: React.FC<PopItemProps> = ({ item, trigger, onChatWithOwner }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [open, setOpen] = useState(false);
 
   const prevImage = () => {
     setCurrentIndex((prev) =>
@@ -42,8 +44,13 @@ const PopItem: React.FC<PopItemProps> = ({ item, trigger }) => {
     );
   };
 
+  const handleChatClick = () => {
+    onChatWithOwner();
+    setOpen(false); // close the dialog
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="max-w-lg">
         <DialogHeader>
@@ -99,7 +106,9 @@ const PopItem: React.FC<PopItemProps> = ({ item, trigger }) => {
 
         {/* Footer Buttons */}
         <DialogFooter className="mt-4 flex justify-between">
-          <Button variant="default">Chat with Owner</Button>
+          <Button variant="default" onClick={handleChatClick}>
+            Chat with Owner
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

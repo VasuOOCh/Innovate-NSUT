@@ -26,7 +26,7 @@ export const userSlice = createSlice({
         fetchUserStart: (state: any) => {
             state.pending = true;
         },
-        fetchUserSuccess: (state: UserState, action: PayloadAction<User>) => {
+        fetchUserSuccess: (state: UserState, action: PayloadAction<User | null>) => {
             state.pending = false;
             state.currentUser = action.payload;
             state.error = false;

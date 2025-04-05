@@ -4,7 +4,8 @@ import Home from "./pages/Home";
 import SignIn from "./pages/Auth/SignIn";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SignUp from "./pages/Auth/Signup";
-import ProfilePage from "./pages/Auth/ProfilePage";
+import LAFHome from "./pages/LostAndFound/LAFHome";
+import Query from "./pages/LostAndFound/Query";
 
 const router = createBrowserRouter([
   {
@@ -24,9 +25,14 @@ const router = createBrowserRouter([
         element : <SignUp />
       },
       {
-        path : '/profile',
-        element : <ProfilePage />
-      }
+        path : '/laf',
+        element : <LAFHome />
+      },
+      {
+        path : '/laf/query',
+        element : <Query />
+      },
+      
     ]
   },
 ])

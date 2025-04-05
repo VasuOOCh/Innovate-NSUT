@@ -10,6 +10,7 @@ const itemSchema = new mongoose.Schema({
     },
     owner : {
         type : mongoose.Types.ObjectId,
+        ref : "User",
         required : true
     },
     location : {
@@ -18,8 +19,12 @@ const itemSchema = new mongoose.Schema({
     },
     finder : {
         type : mongoose.Types.ObjectId,
+        ref : "User",
         default : null
-    }
+    },
+    images : [
+        String
+    ]
 }, {timestamps : true})
 
 const Item = mongoose.model('Item', itemSchema);

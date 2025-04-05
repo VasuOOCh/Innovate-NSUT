@@ -1,5 +1,5 @@
 // src/components/Navbar.tsx
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full bg-white shadow-md border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-      <div className="text-xl font-semibold">MyApp</div>
+      <div className="text-xl font-semibold">InnovateNSUT</div>
 
       {/* Desktop Nav */}
       <div className="hidden md:flex items-center space-x-6">

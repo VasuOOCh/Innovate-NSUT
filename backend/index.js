@@ -68,21 +68,6 @@ const wss = new WebSocketServer({ server });
 
 wss.on('connection', (connection, request) => { //When client will make connection to the server
     try {
-        // console.log("Connection established");
-        // console.log(wss.clients.size);
-
-        // connection.send('connection recieved');
-
-
-        // function notifyAboutOnlinePeople() {
-        //     [...wss.clients].forEach((client => {
-        //         client.send(JSON.stringify(
-        //             {
-        //                 online: [...wss.clients].map((c) => ({ userId: c.userId }))
-        //             }
-        //         ))
-        //     }))
-        // }
 
         let cookies = request.headers.cookie;
         // console.log(cookies);
@@ -110,11 +95,10 @@ wss.on('connection', (connection, request) => { //When client will make connecti
 
             }
         };
-        // console.log(connection.userId);
-
-        // notifyAboutOnlinePeople()
 
         connection.on('message', ((data) => {
+          console.log("hehe", data);
+          
             let message= (JSON.parse(data));
             // console.log("New message recieved :  ", message);
             [...wss.clients]

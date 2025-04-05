@@ -46,7 +46,7 @@ const LAFHome = () => {
 
             <h1 className='text-3xl text-center my-4 font-bold'>Lost and Found</h1>
             <div className='flex flex-row my-8 mx-4 gap-2 relative'>
-                <div className='w-[70%] flex justify-around gap-10 flex-wrap'>
+                <div className='w-[75%] flex justify-around gap-10 flex-wrap'>
                     {
                         items.map((item: Item, key) => (
                             item.finder == null ? (
@@ -62,7 +62,7 @@ const LAFHome = () => {
                 </div>
 
                 {/* Chat Mode */}
-                <div className='w-[30%] sticky top-0'>
+                <div className='w-[25%] sticky top-0'>
                     <h1 className='text-3xl font-bold'> Chats</h1>
                     <Chat selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
                 </div>

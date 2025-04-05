@@ -1,8 +1,11 @@
 import React from 'react'
+import Query from './Query'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <div>
+      <Query />
+    </div>
   )
 }
 

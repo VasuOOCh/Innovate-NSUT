@@ -5,12 +5,15 @@ const itemSchema = new mongoose.Schema({
         type : String,
         required : true
     },
+    desc : {
+        type : String
+    },
     owner : {
         type : mongoose.Types.ObjectId,
         required : true
     },
     location : {
-        type : mongoose.Types.ObjectId,
+        type : String,
         required : true
     },
     finder : {

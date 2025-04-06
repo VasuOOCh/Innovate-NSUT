@@ -57,6 +57,13 @@ const SignIn = () => {
         <Input type="text" name="username" placeholder="Username" required />
         <Input type="password" name="password" placeholder="Password" required />
 
+        {
+          error && <p className='text-red-600'>{error}</p>
+        }
+        {
+          success && <p className='text-green-600'>{error}</p>
+        }
+
         <Button type="submit" className="w-full">
           {loading ? "Signing In..." : "Sign In"}
         </Button>

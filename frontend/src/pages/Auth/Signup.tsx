@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { fetchUserFailure } from '@/Redux/userSlice';
-import alertcomp from '@/lib/alertcomp';
+// import alertcomp from '@/lib/alertcomp';
 
 const SignUp = () => {
   const [error, setError] = useState<string | null>(null);
@@ -58,13 +58,13 @@ const SignUp = () => {
         </Button>
       </form>
 
-      {error && (
-        alertcomp("Error", error, "destructive")
-      )}
+      {
+          error && <p className='text-red-600'>{error}</p>
+        }
+        {
+          success && <p className='text-green-600'>{error}</p>
+        }
 
-      {success && (
-        alertcomp("Success", success, "default")
-      )}
     </div>
   );
 };

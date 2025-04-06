@@ -1,4 +1,3 @@
-import React from "react";
 import { Card as ShadCard, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import PopItem from "./PopItem";

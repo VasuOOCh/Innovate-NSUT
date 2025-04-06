@@ -1,15 +1,9 @@
-import React from "react";
+// import React from "react";
 import { Card as ShadCard, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+// import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import MarkAsFoundPopup from "@/components/MarkAsFoundPopup";
 import axios from "axios";
-
-const dummyUsers = [
-    { id: "1", username: "alice" },
-    { id: "2", username: "bob" },
-    { id: "3", username: "charlie" },
-];
 
 type ItemType = {
     _id: string,

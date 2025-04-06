@@ -22,7 +22,7 @@ const MarkAsFoundPopup: React.FC<MarkAsFoundPopupProps> = ({ onSelect, trigger }
   const [search, setSearch] = useState("");
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [users, setUsers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -32,7 +32,7 @@ const MarkAsFoundPopup: React.FC<MarkAsFoundPopupProps> = ({ onSelect, trigger }
       } catch (error) {
         console.log(error);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 

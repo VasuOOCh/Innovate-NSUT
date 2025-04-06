@@ -1,9 +1,9 @@
 import Card from '@/components/Card';
 import Chat from '@/components/Chat';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 type Item = {
     name: string,
     desc: string,
@@ -13,16 +13,14 @@ type Item = {
     finder: any
 }
 const LAFHome = () => {
-    const [loading, setLoading] = useState(true);
+    // const [loading,setLoading] = useState(true);
     const [items, setItems] = useState([]);
     // console.log(items);
     const { currentUser } = useSelector((self: any) => self.user)
-    const navigate = useNavigate()
     if (!currentUser) {
-        console.log("here");
-
-        return navigate('/signin');
+        return <Navigate to="/signin" />;
     }
+    
     // Inside LAFHome.tsx
     const [selectedUser, setSelectedUser] = useState<any>(null);
 
@@ -32,7 +30,7 @@ const LAFHome = () => {
             const fetchItems = async () => {
                 const res = await axios.get('/laf/items');
                 setItems(res.data)
-                setLoading(false)
+                // setLoading(false)
             }
             fetchItems();
 

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux';
 // import Send from "@mui/icons-material/Send";
-import React from "react";
 
 // Types
 interface User {
@@ -19,11 +18,11 @@ interface Message {
   createdAt?: string;
 }
 
-interface RootState {
-  user: {
-    currentUser: User;
-  };
-}
+// interface RootState {
+//   user: {
+//     currentUser: User;
+//   };
+// }
 
 function Chat({
   selectedUser,
@@ -33,7 +32,7 @@ function Chat({
   setSelectedUser: (user: User | null) => void;
 }) {
 
-  const [chat, setChat] = useState(true);
+  // const [chat, setChat] = useState(true);
   const { currentUser } = useSelector((state: any) => state.user);
   const [myChatPeople, setMyChatPeople] = useState<User[]>([]);
   // const [selectedUser, setSelectedUser] = useState<User | null>(null);

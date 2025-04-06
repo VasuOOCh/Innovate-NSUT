@@ -10,18 +10,16 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
 import CloudinaryUploadWidget from "@/lib/UploadWidget";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Query = () => {
     const {currentUser} = useSelector((self : any) => self.user)
 
-    const navigate = useNavigate()
     if (!currentUser) {
-        console.log("here");
-        
-        return navigate('/signin');
-    }
+      return <Navigate to="/signin" />;
+  }
+  
   const [images, setImages] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +33,7 @@ const Query = () => {
   const cloudName = "dzgqb4bb6";
   const uploadPreset = "ctrlwin";
 
-  const cld = new Cloudinary({
+  new Cloudinary({
     cloud: {
       cloudName,
     },
@@ -59,7 +57,7 @@ const Query = () => {
       setIsSubmitting(true);
       setError(null);
       
-      const res = await axios.post("/laf/upload", {
+      await axios.post("/laf/upload", {
         ...formData,
         images,
       });
@@ -138,7 +136,7 @@ const Query = () => {
             )}
 
             {success && (
-              <Alert variant="success">
+              <Alert variant="default">
                 <AlertDescription>{success}</AlertDescription>
               </Alert>
             )}

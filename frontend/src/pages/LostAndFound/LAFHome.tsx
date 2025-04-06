@@ -62,7 +62,7 @@ const LAFHome = () => {
                 </div>
 
                 {/* Chat Mode */}
-                <div className='w-[25%] sticky top-0'>
+                <div className='w-[25%] sticky flex flex-col gap-4 top-0'>
                     <h1 className='text-3xl font-bold'> Chats</h1>
                     <Chat selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
                 </div>

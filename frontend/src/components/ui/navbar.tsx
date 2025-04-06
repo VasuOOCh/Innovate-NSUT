@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full bg-white shadow-md border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-      <div className="text-xl font-semibold">InnovateNSUT</div>
+      <Link to={'/'} className="text-xl font-semibold">InnovateNSUT</Link>
 
       {/* Desktop Nav */}
       <div className="hidden md:flex items-center space-x-6">

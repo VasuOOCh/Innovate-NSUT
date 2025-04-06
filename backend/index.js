@@ -14,8 +14,7 @@ import messageRouter from './routers/messageRouter.js'
 import chatRouter from './routers/chatRouter.js'
 import WebSocket, { WebSocketServer } from 'ws';
 import jwt from 'jsonwebtoken'
-
-import { app, server } from "./lib/socket.js";
+const app = express();
 
 dotenv.config();
 

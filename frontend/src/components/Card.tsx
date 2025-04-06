@@ -23,7 +23,7 @@ const Card = ({
   onChatWithOwner?: () => void;
 }) => {
   return (
-    <PopItem item={item} onChatWithOwner={onChatWithOwner} trigger={
+    <PopItem item={item} onChatWithOwner={onChatWithOwner!} trigger={
       <ShadCard className="bg-background cursor-pointer shadow-lg hover:shadow-xl transition duration-300 rounded-2xl max-w-xs w-full">
         <CardContent className="p-4 flex flex-col gap-4">
           {/* Owner Info */}

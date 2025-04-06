@@ -12,7 +12,7 @@ import lafRouter from "./routers/lafRouter.js"
 import userRoute from "./routers/userRoute.js"
 import messageRouter from './routers/messageRouter.js'
 import chatRouter from './routers/chatRouter.js'
-import WebSocket, { WebSocketServer } from 'ws';
+import { WebSocketServer } from 'ws';
 import jwt from 'jsonwebtoken'
 const app = express();
 
@@ -31,13 +31,13 @@ app.use(
   })
 );
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
-  });
-}
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+//   });
+// }
 
 app.use('/api/auth', authRouter);
 app.use('/api/laf', lafRouter)

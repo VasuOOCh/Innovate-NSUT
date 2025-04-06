@@ -59,7 +59,7 @@ app.use((err, req, res, next) => {
   })
 })
 
-const server = server.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log("server is running on PORT:" + PORT);
   connectDB();
 });

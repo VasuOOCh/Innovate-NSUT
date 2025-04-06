@@ -43,7 +43,7 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  axios.defaults.baseURL = 'http://localhost:3000/api';
+  axios.defaults.baseURL = 'https://innovate-nsut-9fgd.onrender.com/api';
   axios.defaults.withCredentials = true;
   return (
     <RouterProvider router={router} />
